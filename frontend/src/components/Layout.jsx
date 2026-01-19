@@ -7,7 +7,7 @@ import { useSettings } from '../context/SettingsContext';
 const Layout = ({ children }) => {
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { t } = useSettings();
+  const { t, isDark } = useSettings();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const isActive = (path) => {
@@ -51,14 +51,20 @@ const Layout = ({ children }) => {
         initial={{ x: 0 }}
         animate={{ x: sidebarOpen ? 0 : -256 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-primary-600 to-primary-800 shadow-xl"
+        className={`fixed inset-y-0 left-0 z-50 w-64 shadow-xl ${
+          isDark
+            ? 'bg-gradient-to-b from-gray-800 to-gray-900'
+            : 'bg-gradient-to-b from-primary-600 to-primary-800'
+        }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-between h-16 px-6 bg-primary-900"
+            className={`flex items-center justify-between h-16 px-6 ${
+              isDark ? 'bg-gray-900' : 'bg-primary-900'
+            }`}
           >
             <h1 className="text-2xl font-bold text-white">{t('hrmsLite')}</h1>
             <button
@@ -84,8 +90,12 @@ const Layout = ({ children }) => {
                   to={item.path}
                   className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
                     isActive(item.path)
-                      ? 'bg-white text-primary-600 shadow-lg'
-                      : 'text-white hover:bg-primary-700'
+                      ? isDark
+                        ? 'bg-gray-700 text-white shadow-lg'
+                        : 'bg-white text-primary-600 shadow-lg'
+                      : isDark
+                        ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                        : 'text-white hover:bg-primary-700'
                   }`}
                 >
                   <span className="mr-3">{item.icon}</span>
@@ -100,23 +110,27 @@ const Layout = ({ children }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="p-4 border-t border-primary-700"
+            className={`p-4 border-t ${isDark ? 'border-gray-700' : 'border-primary-700'}`}
           >
             <div className="px-4 py-3">
-              <div className="flex items-center text-white mb-3">
+              <div className={`flex items-center mb-3 ${isDark ? 'text-gray-300' : 'text-white'}`}>
                 <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <div>
                   <p className="text-sm font-medium">{user?.username || t('adminUser')}</p>
-                  <p className="text-xs text-primary-200">{user?.role || t('systemAdministrator')}</p>
+                  <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-primary-200'}`}>{user?.role || t('systemAdministrator')}</p>
                 </div>
               </div>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={logout}
-                className="w-full flex items-center justify-center px-4 py-2 bg-primary-700 hover:bg-primary-600 text-white rounded-lg transition-colors text-sm font-medium"
+                className={`w-full flex items-center justify-center px-4 py-2 rounded-lg transition-colors text-sm font-medium ${
+                  isDark
+                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    : 'bg-primary-700 hover:bg-primary-600 text-white'
+                }`}
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -132,7 +146,11 @@ const Layout = ({ children }) => {
       {!sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="fixed top-4 left-4 z-40 p-2 bg-primary-600 text-white rounded-lg shadow-lg lg:hidden"
+          className={`fixed top-4 left-4 z-40 p-2 rounded-lg shadow-lg lg:hidden ${
+            isDark
+              ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              : 'bg-primary-600 text-white hover:bg-primary-700'
+          }`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
