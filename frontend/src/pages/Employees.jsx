@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { employeeAPI } from "../services/api";
+import { useSettings } from "../context/SettingsContext";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
@@ -9,6 +10,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { toast } from "react-toastify";
 
 const Employees = () => {
+  const { t } = useSettings();
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,6 +23,46 @@ const Employees = () => {
   });
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [filters, setFilters] = useState({
+    employeeId: "",
+    fullName: "",
+    email: "",
+    department: "",
+  });
+
+  const handleFilterChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      employeeId: "",
+      fullName: "",
+      email: "",
+      department: "",
+    });
+  };
+
+  const filteredEmployees = employees.filter((employee) => {
+    const matchesId = employee.employeeId
+      .toLowerCase()
+      .includes(filters.employeeId.toLowerCase());
+    const matchesName = employee.fullName
+      .toLowerCase()
+      .includes(filters.fullName.toLowerCase());
+    const matchesEmail = employee.email
+      .toLowerCase()
+      .includes(filters.email.toLowerCase());
+    const matchesDepartment = employee.department
+      .toLowerCase()
+      .includes(filters.department.toLowerCase());
+    return matchesId && matchesName && matchesEmail && matchesDepartment;
+  });
+
+  const hasActiveFilters = Object.values(filters).some((value) => value !== "");
 
   useEffect(() => {
     fetchEmployees();
@@ -133,67 +175,157 @@ const Employees = () => {
     setFormError("");
   };
   if (loading) {
-    return <LoadingSpinner size="lg" text="Loading employees..." />;
+    return <LoadingSpinner size="lg" text={t('loading')} />;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Employee Management
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          {t('employeeManagement')}
         </h1>
-        <Button onClick={openAddModal}>+ Add Employee</Button>
+        <Button onClick={openAddModal}>+ {t('addEmployee')}</Button>
       </div>
 
       {error && <ErrorMessage message={error} onRetry={fetchEmployees} />}
 
+      {/* Filter Section */}
+      {!error && employees.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 mb-6 border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('filters')}</h2>
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+              >
+                {t('clearFilters')}
+              </button>
+            )}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {t('employeeId')}
+              </label>
+              <input
+                type="text"
+                name="employeeId"
+                value={filters.employeeId}
+                onChange={handleFilterChange}
+                placeholder={`${t('employeeId')}...`}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {t('fullName')}
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                value={filters.fullName}
+                onChange={handleFilterChange}
+                placeholder={`${t('fullName')}...`}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {t('email')}
+              </label>
+              <input
+                type="text"
+                name="email"
+                value={filters.email}
+                onChange={handleFilterChange}
+                placeholder={`${t('email')}...`}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {t('department')}
+              </label>
+              <input
+                type="text"
+                name="department"
+                value={filters.department}
+                onChange={handleFilterChange}
+                placeholder={`${t('department')}...`}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+          {hasActiveFilters && (
+            <div className="mt-3 text-sm text-gray-600 dark:text-gray-400">
+              {filteredEmployees.length} / {employees.length}
+            </div>
+          )}
+        </div>
+      )}
+
       {!error && employees.length === 0 && (
         <EmptyState
-          title="No employees found"
-          description="Get started by adding your first employee to the system."
+          title={t('noEmployeesFound')}
+          description={t('getStartedByAdding')}
           icon="👥"
-          action={<Button onClick={openAddModal}>Add First Employee</Button>}
+          action={<Button onClick={openAddModal}>{t('addFirstEmployee')}</Button>}
         />
       )}
 
-      {!error && employees.length > 0 && (
-        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+      {!error && employees.length > 0 && filteredEmployees.length === 0 && (
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-8 text-center border border-gray-200 dark:border-gray-700">
+          <div className="text-gray-400 dark:text-gray-500 text-4xl mb-3">🔍</div>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">{t('noEmployeesFound')}</h3>
+          <p className="text-gray-500 dark:text-gray-400 mb-4">{t('getStartedByAdding')}</p>
+          <button
+            onClick={clearFilters}
+            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+          >
+            {t('clearFilters')}
+          </button>
+        </div>
+      )}
+
+      {!error && filteredEmployees.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee ID
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('employeeId')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Full Name
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('fullName')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('email')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Department
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('department')}
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('actions')}
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {employees.map((employee) => (
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {filteredEmployees.map((employee) => (
                 <tr
                   key={employee._id}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                     {employee.employeeId}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {employee.fullName}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                     {employee.email}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                     {employee.department}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -204,7 +336,7 @@ const Employees = () => {
                       }
                       className="text-sm"
                     >
-                      Delete
+                      {t('delete')}
                     </Button>
                   </td>
                 </tr>
@@ -217,7 +349,7 @@ const Employees = () => {
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title="Add New Employee"
+        title={t('addNewEmployee')}
       >
         <form onSubmit={handleSubmit}>
           {/* Mock Data Button */}
@@ -234,13 +366,13 @@ const Employees = () => {
             </div>
           )}
           {formError && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm">
               {formError}
             </div>
           )}
 
           <Input
-            label="Employee ID"
+            label={t('employeeId')}
             name="employeeId"
             value={formData.employeeId}
             onChange={handleInputChange}
@@ -249,7 +381,7 @@ const Employees = () => {
           />
 
           <Input
-            label="Full Name"
+            label={t('fullName')}
             name="fullName"
             value={formData.fullName}
             onChange={handleInputChange}
@@ -258,7 +390,7 @@ const Employees = () => {
           />
 
           <Input
-            label="Email Address"
+            label={t('emailAddress')}
             type="email"
             name="email"
             value={formData.email}
@@ -268,7 +400,7 @@ const Employees = () => {
           />
 
           <Input
-            label="Department"
+            label={t('department')}
             name="department"
             value={formData.department}
             onChange={handleInputChange}
@@ -283,10 +415,10 @@ const Employees = () => {
               onClick={() => setShowModal(false)}
               disabled={submitting}
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Adding..." : "Add Employee"}
+              {submitting ? t('loading') : t('addEmployee')}
             </Button>
           </div>
         </form>

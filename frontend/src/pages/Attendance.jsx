@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { attendanceAPI, employeeAPI } from '../services/api';
+import { useSettings } from '../context/SettingsContext';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
@@ -9,6 +10,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import { toast } from 'react-toastify';
 
 const Attendance = () => {
+  const { t } = useSettings();
   const [attendance, setAttendance] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -129,39 +131,39 @@ const Attendance = () => {
   };
 
   if (loading && employees.length === 0) {
-    return <LoadingSpinner size="lg" text="Loading attendance records..." />;
+    return <LoadingSpinner size="lg" text={t('loading')} />;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Attendance Management</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('attendanceManagement')}</h1>
         <Button onClick={openMarkModal} disabled={employees.length === 0}>
-          + Mark Attendance
+          + {t('markAttendance')}
         </Button>
       </div>
 
       {employees.length === 0 && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-          <p className="text-yellow-800">
-            No employees found. Please add employees first before marking attendance.
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
+          <p className="text-yellow-800 dark:text-yellow-300">
+            {t('noEmployeesFound')}. {t('getStartedByAdding')}
           </p>
         </div>
       )}
 
-      <div className="bg-white shadow-sm rounded-lg p-4 mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Filters</h2>
+      <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 mb-6 border border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('filters')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Filter by Employee
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t('filterByEmployee')}
             </label>
             <select
               value={filterEmployeeId}
               onChange={(e) => setFilterEmployeeId(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
-              <option value="">All Employees</option>
+              <option value="">{t('allEmployees')}</option>
               {employees.map((emp) => (
                 <option key={emp._id} value={emp.employeeId}>
                   {emp.fullName} ({emp.employeeId})
@@ -171,14 +173,14 @@ const Attendance = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Filter by Date
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t('filterByDate')}
             </label>
             <input
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
 
@@ -188,7 +190,7 @@ const Attendance = () => {
               onClick={clearFilters}
               className="w-full"
             >
-              Clear Filters
+              {t('clearFilters')}
             </Button>
           </div>
         </div>
@@ -200,61 +202,61 @@ const Attendance = () => {
 
       {!error && attendance.length === 0 && (
         <EmptyState
-          title="No attendance records found"
+          title={t('noAttendanceRecords')}
           description={
             filterDate || filterEmployeeId
-              ? "No records match your filters. Try adjusting your search criteria."
-              : "Start by marking attendance for your employees."
+              ? t('noAttendanceRecords')
+              : t('noAttendanceData')
           }
           icon="📋"
           action={
             employees.length > 0 && (
-              <Button onClick={openMarkModal}>Mark Attendance</Button>
+              <Button onClick={openMarkModal}>{t('markAttendance')}</Button>
             )
           }
         />
       )}
 
       {!error && attendance.length > 0 && (
-        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee ID
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('employeeId')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee Name
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('employeeName')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('date')}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  {t('status')}
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {attendance.map((record) => (
-                <tr key={record._id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={record._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                     {record.employeeId}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {getEmployeeName(record.employeeId)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                     {formatDate(record.date)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         record.status === 'Present'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
+                          ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                          : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                       }`}
                     >
-                      {record.status}
+                      {t(record.status.toLowerCase())}
                     </span>
                   </td>
                 </tr>
@@ -267,27 +269,27 @@ const Attendance = () => {
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title="Mark Attendance"
+        title={t('markAttendance')}
       >
         <form onSubmit={handleSubmit}>
           {formError && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm">
               {formError}
             </div>
           )}
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Employee <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t('employee')} <span className="text-red-500">*</span>
             </label>
             <select
               name="employeeId"
               value={formData.employeeId}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               required
             >
-              <option value="">Select Employee</option>
+              <option value="">{t('selectEmployee')}</option>
               {employees.map((emp) => (
                 <option key={emp._id} value={emp.employeeId}>
                   {emp.fullName} ({emp.employeeId})
@@ -297,7 +299,7 @@ const Attendance = () => {
           </div>
 
           <Input
-            label="Date"
+            label={t('date')}
             type="date"
             name="date"
             value={formData.date}
@@ -306,18 +308,18 @@ const Attendance = () => {
           />
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Status <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t('status')} <span className="text-red-500">*</span>
             </label>
             <select
               name="status"
               value={formData.status}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
               required
             >
-              <option value="Present">Present</option>
-              <option value="Absent">Absent</option>
+              <option value="Present">{t('present')}</option>
+              <option value="Absent">{t('absent')}</option>
             </select>
           </div>
 
@@ -328,13 +330,13 @@ const Attendance = () => {
               onClick={() => setShowModal(false)}
               disabled={submitting}
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               type="submit"
               disabled={submitting}
             >
-              {submitting ? 'Submitting...' : 'Mark Attendance'}
+              {submitting ? t('loading') : t('markAttendance')}
             </Button>
           </div>
         </form>
