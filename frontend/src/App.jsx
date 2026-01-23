@@ -7,6 +7,10 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import Attendance from './pages/Attendance';
+import Leave from './pages/Leave';
+import Payroll from './pages/Payroll';
+import Performance from './pages/Performance';
+import Documents from './pages/Documents';
 import Settings from './components/Settings';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,6 +35,10 @@ const AppContent = () => {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/employees" element={<Employees />} />
                     <Route path="/attendance" element={<Attendance />} />
+                    <Route path="/leave" element={<Leave />} />
+                    <Route path="/payroll" element={<Payroll />} />
+                    <Route path="/performance" element={<Performance />} />
+                    <Route path="/documents" element={<Documents />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Layout>

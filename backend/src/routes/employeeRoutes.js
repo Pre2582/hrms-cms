@@ -3,6 +3,7 @@ import {
   getAllEmployees,
   getEmployee,
   createEmployee,
+  updateEmployee,
   deleteEmployee
 } from '../controllers/employeeController.js';
 
@@ -14,6 +15,7 @@ router.route('/')
 
 router.route('/:id')
   .get(getEmployee)
+  .put(updateEmployee)
   .delete(deleteEmployee);
 
 export default router;

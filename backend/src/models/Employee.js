@@ -24,6 +24,16 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Department is required'],
     trim: true
+  },
+  mobile: {
+    type: String,
+    required: [true, 'Mobile number is required'],
+    trim: true,
+    match: [/^[0-9]{10}$/, 'Please enter a valid 10-digit mobile number']
+  },
+  dob: {
+    type: Date,
+    required: [true, 'Date of birth is required']
   }
 }, {
   timestamps: true

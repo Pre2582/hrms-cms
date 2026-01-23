@@ -4,6 +4,10 @@ export const translations = {
     dashboard: 'Dashboard',
     employees: 'Employees',
     attendance: 'Attendance',
+    leave: 'Leave',
+    payroll: 'Payroll',
+    performance: 'Performance',
+    documents: 'Documents',
 
     // Dashboard
     welcomeMessage: 'Welcome to HRMS Lite - Overview of your organization',
@@ -34,13 +38,16 @@ export const translations = {
     emailAddress: 'Email Address',
     department: 'Department',
     actions: 'Actions',
+    edit: 'Edit',
     delete: 'Delete',
+    update: 'Update',
     addNewEmployee: 'Add New Employee',
     cancel: 'Cancel',
 
     // Attendance Management
     attendanceManagement: 'Attendance Management',
     markAttendance: 'Mark Attendance',
+    editAttendance: 'Edit Attendance',
     filters: 'Filters',
     filterByEmployee: 'Filter by Employee',
     allEmployees: 'All Employees',
@@ -54,6 +61,83 @@ export const translations = {
     absent: 'Absent',
     selectEmployee: 'Select Employee',
 
+    // Attendance Status Types
+    late: 'Late',
+    early: 'Early',
+    halfDay: 'Half-Day',
+
+    // Punch In/Out
+    punchIn: 'Punch In',
+    punchOut: 'Punch Out',
+    punchInTime: 'Punch In Time',
+    punchOutTime: 'Punch Out Time',
+    workingHours: 'Working Hours',
+    punchedIn: 'Punched In',
+    punchedOut: 'Punched Out',
+    notPunchedIn: 'Not Punched In',
+    notPunchedOut: 'Not Punched Out',
+    punchInSuccess: 'Punched in successfully!',
+    punchOutSuccess: 'Punched out successfully!',
+    alreadyPunchedIn: 'Already punched in today',
+    alreadyPunchedOut: 'Already punched out today',
+    punchInFirst: 'Please punch in first',
+    todayStatus: "Today's Status",
+    currentTime: 'Current Time',
+
+    // Calendar View
+    calendarView: 'Calendar View',
+    tableView: 'Table View',
+    monthView: 'Month View',
+    previousMonth: 'Previous Month',
+    nextMonth: 'Next Month',
+    today: 'Today',
+    sunday: 'Sun',
+    monday: 'Mon',
+    tuesday: 'Tue',
+    wednesday: 'Wed',
+    thursday: 'Thu',
+    friday: 'Fri',
+    saturday: 'Sat',
+
+    // Monthly Summary
+    monthlySummary: 'Monthly Summary',
+    totalPresent: 'Total Present',
+    totalAbsent: 'Total Absent',
+    totalLate: 'Total Late',
+    totalEarly: 'Total Early',
+    totalHalfDay: 'Total Half-Day',
+
+    // Manual Correction
+    requestCorrection: 'Request Correction',
+    correctionRequest: 'Correction Request',
+    correctionReason: 'Reason for Correction',
+    correctedPunchIn: 'Corrected Punch In',
+    correctedPunchOut: 'Corrected Punch Out',
+    correctedStatus: 'Corrected Status',
+    submitCorrection: 'Submit Correction Request',
+    correctionSubmitted: 'Correction request submitted successfully',
+    pendingCorrections: 'Pending Corrections',
+    noPendingCorrections: 'No pending correction requests',
+
+    // Approval Workflow
+    approvalStatus: 'Approval Status',
+    pending: 'Pending',
+    approved: 'Approved',
+    rejected: 'Rejected',
+    approve: 'Approve',
+    reject: 'Reject',
+    approvalRemarks: 'Remarks',
+    approvedBy: 'Approved By',
+    approvalDate: 'Approval Date',
+    originalStatus: 'Original Status',
+    correctionApproved: 'Correction request approved',
+    correctionRejected: 'Correction request rejected',
+    processCorrection: 'Process Correction',
+    viewDetails: 'View Details',
+    correctionDetails: 'Correction Details',
+    requestedBy: 'Requested By',
+    requestedOn: 'Requested On',
+
     // Common
     loading: 'Loading',
     error: 'Error',
@@ -61,6 +145,11 @@ export const translations = {
     adminUser: 'Admin User',
     systemAdministrator: 'System Administrator',
     logout: 'Logout',
+    remarks: 'Remarks',
+    submit: 'Submit',
+    close: 'Close',
+    noData: 'No data available',
+    hrs: 'hrs',
 
     // Settings
     settings: 'Settings',
@@ -90,12 +179,23 @@ export const translations = {
     logoutSuccess: 'Logged out successfully',
     deleteConfirmation: 'Are you sure you want to delete',
     thisWillAlsoDelete: 'This will also delete all attendance records.',
+
+    // Statistics
+    lateToday: 'Late Today',
+    earlyToday: 'Early Today',
+    halfDayToday: 'Half-Day Today',
+    pendingApprovals: 'Pending Approvals',
+    notMarked: 'Not Marked',
   },
   hi: {
     // Navigation
     dashboard: 'डैशबोर्ड',
     employees: 'कर्मचारी',
     attendance: 'उपस्थिति',
+    leave: 'छुट्टी',
+    payroll: 'वेतन',
+    performance: 'प्रदर्शन',
+    documents: 'दस्तावेज़',
 
     // Dashboard
     welcomeMessage: 'HRMS Lite में आपका स्वागत है - अपने संगठन का अवलोकन',
@@ -126,13 +226,16 @@ export const translations = {
     emailAddress: 'ईमेल पता',
     department: 'विभाग',
     actions: 'कार्रवाई',
+    edit: 'संपादित करें',
     delete: 'हटाएं',
+    update: 'अपडेट करें',
     addNewEmployee: 'नया कर्मचारी जोड़ें',
     cancel: 'रद्द करें',
 
     // Attendance Management
     attendanceManagement: 'उपस्थिति प्रबंधन',
     markAttendance: 'उपस्थिति चिह्नित करें',
+    editAttendance: 'उपस्थिति संपादित करें',
     filters: 'फ़िल्टर',
     filterByEmployee: 'कर्मचारी द्वारा फ़िल्टर करें',
     allEmployees: 'सभी कर्मचारी',
@@ -146,6 +249,83 @@ export const translations = {
     absent: 'अनुपस्थित',
     selectEmployee: 'कर्मचारी चुनें',
 
+    // Attendance Status Types
+    late: 'देरी से',
+    early: 'जल्दी',
+    halfDay: 'आधा दिन',
+
+    // Punch In/Out
+    punchIn: 'पंच इन',
+    punchOut: 'पंच आउट',
+    punchInTime: 'पंच इन समय',
+    punchOutTime: 'पंच आउट समय',
+    workingHours: 'काम के घंटे',
+    punchedIn: 'पंच इन हो गया',
+    punchedOut: 'पंच आउट हो गया',
+    notPunchedIn: 'पंच इन नहीं हुआ',
+    notPunchedOut: 'पंच आउट नहीं हुआ',
+    punchInSuccess: 'सफलतापूर्वक पंच इन हुआ!',
+    punchOutSuccess: 'सफलतापूर्वक पंच आउट हुआ!',
+    alreadyPunchedIn: 'आज पहले ही पंच इन हो चुका है',
+    alreadyPunchedOut: 'आज पहले ही पंच आउट हो चुका है',
+    punchInFirst: 'कृपया पहले पंच इन करें',
+    todayStatus: 'आज की स्थिति',
+    currentTime: 'वर्तमान समय',
+
+    // Calendar View
+    calendarView: 'कैलेंडर दृश्य',
+    tableView: 'टेबल दृश्य',
+    monthView: 'महीना दृश्य',
+    previousMonth: 'पिछला महीना',
+    nextMonth: 'अगला महीना',
+    today: 'आज',
+    sunday: 'रवि',
+    monday: 'सोम',
+    tuesday: 'मंगल',
+    wednesday: 'बुध',
+    thursday: 'गुरु',
+    friday: 'शुक्र',
+    saturday: 'शनि',
+
+    // Monthly Summary
+    monthlySummary: 'मासिक सारांश',
+    totalPresent: 'कुल उपस्थित',
+    totalAbsent: 'कुल अनुपस्थित',
+    totalLate: 'कुल देरी',
+    totalEarly: 'कुल जल्दी',
+    totalHalfDay: 'कुल आधा दिन',
+
+    // Manual Correction
+    requestCorrection: 'सुधार अनुरोध',
+    correctionRequest: 'सुधार अनुरोध',
+    correctionReason: 'सुधार का कारण',
+    correctedPunchIn: 'सुधारित पंच इन',
+    correctedPunchOut: 'सुधारित पंच आउट',
+    correctedStatus: 'सुधारित स्थिति',
+    submitCorrection: 'सुधार अनुरोध जमा करें',
+    correctionSubmitted: 'सुधार अनुरोध सफलतापूर्वक जमा हुआ',
+    pendingCorrections: 'लंबित सुधार',
+    noPendingCorrections: 'कोई लंबित सुधार अनुरोध नहीं',
+
+    // Approval Workflow
+    approvalStatus: 'अनुमोदन स्थिति',
+    pending: 'लंबित',
+    approved: 'स्वीकृत',
+    rejected: 'अस्वीकृत',
+    approve: 'स्वीकृत करें',
+    reject: 'अस्वीकार करें',
+    approvalRemarks: 'टिप्पणी',
+    approvedBy: 'द्वारा स्वीकृत',
+    approvalDate: 'अनुमोदन तिथि',
+    originalStatus: 'मूल स्थिति',
+    correctionApproved: 'सुधार अनुरोध स्वीकृत',
+    correctionRejected: 'सुधार अनुरोध अस्वीकृत',
+    processCorrection: 'सुधार प्रक्रिया',
+    viewDetails: 'विवरण देखें',
+    correctionDetails: 'सुधार विवरण',
+    requestedBy: 'द्वारा अनुरोधित',
+    requestedOn: 'अनुरोध की तारीख',
+
     // Common
     loading: 'लोड हो रहा है',
     error: 'त्रुटि',
@@ -153,6 +333,11 @@ export const translations = {
     adminUser: 'व्यवस्थापक उपयोगकर्ता',
     systemAdministrator: 'सिस्टम व्यवस्थापक',
     logout: 'लॉग आउट',
+    remarks: 'टिप्पणी',
+    submit: 'जमा करें',
+    close: 'बंद करें',
+    noData: 'कोई डेटा उपलब्ध नहीं',
+    hrs: 'घंटे',
 
     // Settings
     settings: 'सेटिंग्स',
@@ -182,5 +367,13 @@ export const translations = {
     logoutSuccess: 'सफलतापूर्वक लॉग आउट किया गया',
     deleteConfirmation: 'क्या आप वाकई हटाना चाहते हैं',
     thisWillAlsoDelete: 'यह सभी उपस्थिति रिकॉर्ड भी हटा देगा।',
+
+    // Statistics
+    lateToday: 'आज देरी से',
+    earlyToday: 'आज जल्दी',
+    halfDayToday: 'आज आधा दिन',
+    pendingApprovals: 'लंबित अनुमोदन',
+    notMarked: 'चिह्नित नहीं',
   }
 };
+

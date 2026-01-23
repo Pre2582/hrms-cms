@@ -191,8 +191,8 @@ const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('dashboard')}</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">{t('welcomeMessage')}</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{t('dashboard')}</h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-1">{t('welcomeMessage')}</p>
       </motion.div>
 
       {/* Statistics Cards */}
@@ -269,12 +269,12 @@ const Dashboard = () => {
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-red-500/10 to-transparent rounded-full translate-y-12 -translate-x-12" />
 
           <div className="relative">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('attendanceTrend')}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Last 7 days overview</p>
+                <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">{t('attendanceTrend')}</h2>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Last 7 days overview</p>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
                   <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{t('present')}</span>
@@ -286,7 +286,7 @@ const Dashboard = () => {
               </div>
             </div>
             {attendanceTrend.length > 0 ? (
-              <ResponsiveContainer width="100%" height={280}>
+              <ResponsiveContainer width="100%" height={250}>
                 <AreaChart data={attendanceTrend} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                   <defs>
                     <linearGradient id="presentGradient" x1="0" y1="0" x2="0" y2="1">
@@ -353,14 +353,14 @@ const Dashboard = () => {
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full translate-y-16 -translate-x-16" />
 
           <div className="relative">
-            <div className="mb-6">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('departmentDistribution')}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Employee distribution by department</p>
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">{t('departmentDistribution')}</h2>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Employee distribution by department</p>
             </div>
             {departmentData.length > 0 ? (
               <div className="flex flex-col items-center">
-                <div className="relative">
-                  <ResponsiveContainer width={280} height={280}>
+                <div className="relative w-full max-w-[280px]">
+                  <ResponsiveContainer width="100%" height={250}>
                     <PieChart>
                       <defs>
                         {COLORS.map((color, index) => (
@@ -374,8 +374,8 @@ const Dashboard = () => {
                         data={departmentData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={70}
-                        outerRadius={110}
+                        innerRadius={60}
+                        outerRadius={95}
                         paddingAngle={3}
                         dataKey="value"
                         labelLine={false}
@@ -396,13 +396,13 @@ const Dashboard = () => {
                   {/* Center text */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalEmployees}</p>
+                      <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{stats.totalEmployees}</p>
                       <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{t('totalEmployees')}</p>
                     </div>
                   </div>
                 </div>
                 {/* Legend */}
-                <div className="flex flex-wrap justify-center gap-3 mt-4">
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-4">
                   {departmentData.map((entry, index) => (
                     <div key={entry.name} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700/50 px-3 py-1.5 rounded-full">
                       <div
@@ -432,56 +432,97 @@ const Dashboard = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6"
       >
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('recentAttendanceRecords')}</h2>
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('recentAttendanceRecords')}</h2>
         {attendance.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{t('employeeId')}</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{t('date')}</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{t('status')}</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {attendance.slice(0, 5).map((record, index) => (
-                  <motion.tr
-                    key={record._id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+          <>
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-3">
+              {attendance.slice(0, 5).map((record, index) => (
+                <motion.div
+                  key={record._id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 border border-gray-200 dark:border-gray-600"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">
                       {record.employeeId}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                      {new Date(record.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          record.status === 'Present'
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                            : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                        }`}
-                      >
-                        {t(record.status.toLowerCase())}
-                      </span>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </span>
+                    <span
+                      className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        record.status === 'Present'
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                          : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                      }`}
+                    >
+                      {t(record.status.toLowerCase())}
+                    </span>
+                  </div>
+                  <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+                    <svg className="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {new Date(record.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-700">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase whitespace-nowrap">{t('employeeId')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase whitespace-nowrap">{t('date')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase whitespace-nowrap">{t('status')}</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  {attendance.slice(0, 5).map((record, index) => (
+                    <motion.tr
+                      key={record._id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.5 + index * 0.1 }}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                        {record.employeeId}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                        {new Date(record.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span
+                          className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            record.status === 'Present'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                              : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          }`}
+                        >
+                          {t(record.status.toLowerCase())}
+                        </span>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-sm text-gray-500 dark:text-gray-400">
             {t('noAttendanceRecords')}
           </div>
         )}

@@ -47,7 +47,7 @@ export const getEmployee = async (req, res) => {
 // Create new employee
 export const createEmployee = async (req, res) => {
   try {
-    const { employeeId, fullName, email, department } = req.body;
+    const { employeeId, fullName, email, department, mobile, dob } = req.body;
 
     // Check if employee with same employeeId or email already exists
     const existingEmployee = await Employee.findOne({
@@ -67,7 +67,9 @@ export const createEmployee = async (req, res) => {
       employeeId,
       fullName,
       email,
-      department
+      department,
+      mobile,
+      dob
     });
 
     res.status(201).json({
@@ -88,6 +90,78 @@ export const createEmployee = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error creating employee',
+      error: error.message
+    });
+  }
+};
+
+// Update employee
+export const updateEmployee = async (req, res) => {
+  try {
+    const { employeeId, fullName, email, department, mobile, dob } = req.body;
+
+    const employee = await Employee.findById(req.params.id);
+
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
+
+    // Check if employeeId or email already exists for another employee
+    if (employeeId && employeeId !== employee.employeeId) {
+      const existingEmployee = await Employee.findOne({ employeeId });
+      if (existingEmployee) {
+        return res.status(400).json({
+          success: false,
+          message: 'Employee ID already exists'
+        });
+      }
+    }
+
+    if (email && email !== employee.email) {
+      const existingEmployee = await Employee.findOne({ email });
+      if (existingEmployee) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email already exists'
+        });
+      }
+    }
+
+    // Update employee fields
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      req.params.id,
+      {
+        employeeId: employeeId || employee.employeeId,
+        fullName: fullName || employee.fullName,
+        email: email || employee.email,
+        department: department || employee.department,
+        mobile: mobile || employee.mobile,
+        dob: dob || employee.dob
+      },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Employee updated successfully',
+      data: updatedEmployee
+    });
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        message: messages[0] || 'Validation error',
+        errors: messages
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Error updating employee',
       error: error.message
     });
   }
